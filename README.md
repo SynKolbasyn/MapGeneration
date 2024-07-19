@@ -1,2 +1,3 @@
-# MapeGneration
-simple generation on Python
+# MapGeneration
+simple flat map generation on Python
+can be used without permission
