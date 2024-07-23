@@ -14,19 +14,18 @@ def my_random(x=0, y=1):
     secs = secs if secs > 0 else 1
     minutes = minutes if minutes > 0 else 1
     if x == 0 and y == 1:
-        n = microsecs / (secs + minutes) + last_float * 2
+        n = abs(microsecs / (secs + minutes) - last_float * 2)
         last_float = n
-        if last_float == 0.0:
+        if last_float <= 0.0:
             last_float = 0.2
         print(n - int(n))
         return n - int(n)
-    n = int(microsecs // (secs + minutes) + last_int * 2)
+    n = abs(int(microsecs // (secs + minutes) - last_int * 2))
     last_int = n
-    if last_float == 0:
+    if last_float <= 0:
         last_float = 2
     print(n % (y - x + 1) + x)
     return n % (y - x + 1) + x
-
 
 def summ(pix, i, j, mx, my) -> float:
     '''
