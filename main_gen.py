@@ -1,34 +1,44 @@
 from PIL import Image
-from random import random  # later will be destructed
+from random import random
 import functions as fun
 
+colors = [(252, 188, 25), (149, 237, 26), (157, 252, 25), (116, 214, 24), (252, 186, 3), (24, 176, 214),
+          (38, 189, 235)]  # colors: 2 sand, 3 grass n 2 water
+colors1 = [(116, 214, 24), (252, 188, 25), (38, 189, 235)]
+colors2 = [(116, 214, 24), (38, 189, 235)]
 
-colors = {0: (252, 188, 25), 1: (149, 237, 26), 2: (157, 252, 25), 3: (116, 214, 24), 4: (252, 186, 3),
-          5: (24, 176, 214), 6: (38, 189, 235)}  # colors: 2 sand, 3 grass n 2 water
 
-def main(size, name):
-    im = Image.new("RGB", size, (6, 6, 6))
-    x, y = im.size
+def main(size, name, palette):
+    Col = len(palette) - 1
+    im = Image.new("RGB", size, (Col, Col, Col))
+    x, y = size
     pix = im.load()
-    for i in range(15):
-        pix[fun.my_random() * (x - 1), fun.my_random() * (y - 1)] = (0, 0, 0)  # a bit of fun
+    for i in range(20):
+        fun.dots(x, y, Col, pix)
 
-    for i in range(x):
-        for j in range(y):
+    for j in range(y):
+        for i in range(x):
             val = fun.summ(pix, i, j, x, y)
-            if val < 4 and random() > 0.65:
-                val += 1  # less grass more water
-
-            # a = a if a > 0.7 else 0.6
             val = val * (random() + 0.3)  # a bit more random
-            val = 6 if round(val) > 6 else round(val)  # i made 6 colors only
+
+            val = Col if round(val) > Col else round(val)
+
+            if val == Col // 2 and random() > 0.45:  # less fuckin sand more water or whatever
+                val = val - 1 if random() > 0.45 else val + 1
+
+            # if round(fun.summ(pix, i, j, x, y)) != val:
+
             pix[i, j] = (val, val, val)  # it is temporary cuz i cant put an <int> here
 
+
+
     for i in range(x):
         for j in range(y):
-            pix[i, j] = colors[pix[i, j][0]] # finally the colors of map
+            pix[i, j] = palette[pix[i, j][0]]  # finally the colors of map
 
-    im.save(f'{name}.jpg')
+    im.save(f'{name}.png')
 
 
-main((40, 40), 'result')
+main((60, 60), 'aboba', colors1)
+main((60, 60), 'atha', colors1)
+main((60, 60), 'dsfperg', colors1)
