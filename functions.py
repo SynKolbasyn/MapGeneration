@@ -1,18 +1,41 @@
 from datetime import datetime
+from time import perf_counter_ns
+
 
 last_int, last_float = 1, 0.1
+prev_rand = perf_counter_ns()
+
+
+# If you want to use my random,
+# just remove the "y" in the name of your random function,
+# and add "y" to the name of this function
+def m_random(x: int = 0, y: int = 1) -> float | int:
+    global prev_rand
+    a, c, m = 1103515245, 12345, 2 ** 31
+
+    prev_rand = (a * prev_rand + c) % m
+
+    if x == 0 and y == 1:
+        print(prev_rand / m)
+        return prev_rand / m
+
+    return x + prev_rand % (y - x)
 
 
 def my_random(x=0, y=1):
-    '''
+    """
     :param x: int
     :param y: int
     :return: int
-    '''
+    """
+
     global last_float, last_int
+
     minutes, secs, microsecs = datetime.now().minute, datetime.now().second, datetime.now().microsecond
+
     secs = secs if secs > 0 else 1
     minutes = minutes if minutes > 0 else 1
+
     if x == 0 and y == 1:
         n = abs(microsecs / (secs + minutes) - last_float * 2)
         last_float = n
@@ -20,6 +43,7 @@ def my_random(x=0, y=1):
             last_float = 0.2
         print(n - int(n))
         return n - int(n)
+
     n = abs(int(microsecs // (secs + minutes) - last_int * 2))
     last_int = n
     if last_float <= 0:
@@ -27,8 +51,9 @@ def my_random(x=0, y=1):
     print(n % (y - x + 1) + x)
     return n % (y - x + 1) + x
 
+
 def summ(pix, i, j, mx, my) -> float:
-    '''
+    """
     in fact calculating average of some near pixels
     :param pix: matrix
     :param i: int
@@ -36,7 +61,8 @@ def summ(pix, i, j, mx, my) -> float:
     :param mx: int
     :param my: int
     :return: float
-    '''
+    """
+
     if i == 0 and j == 0:
         return sum([pix[i + 1, j + 1][0], pix[i, j + 1][0], pix[i + 1, j][0]]) / 3
     elif i == 0 and j == my - 1:
@@ -65,13 +91,15 @@ def summ(pix, i, j, mx, my) -> float:
 
 
 def colors(n):
-    '''
+    """
     creating palette
     :param n: int
     :return: list
-    '''
-    inp = list(tuple(map(int, input().split())) for i in range(n))
+    """
+
+    inp = list(tuple(map(int, input().split())) for _ in range(n))
     return inp
+
 
 def dots(x, y, Col, pix):
     a, b = int(my_random() * (x - 1)), int(my_random() * (y - 1))

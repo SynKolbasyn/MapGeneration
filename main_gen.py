@@ -1,9 +1,13 @@
-from PIL import Image
+import os.path
 from random import random
+
+from PIL import Image
+
 import functions as fun
 
-colors = [(252, 188, 25), (149, 237, 26), (157, 252, 25), (116, 214, 24), (252, 186, 3), (24, 176, 214),
-          (38, 189, 235)]  # colors: 2 sand, 3 grass n 2 water
+
+# colors: 2 sand, 3 grass n 2 water
+colors = [(252, 188, 25), (149, 237, 26), (157, 252, 25), (116, 214, 24), (252, 186, 3), (24, 176, 214), (38, 189, 235)]
 colors1 = [(116, 214, 24), (252, 188, 25), (38, 189, 235)]
 colors2 = [(116, 214, 24), (38, 189, 235)]
 
@@ -30,15 +34,16 @@ def main(size, name, palette):
 
             pix[i, j] = (val, val, val)  # it is temporary cuz i cant put an <int> here
 
-
-
     for i in range(x):
         for j in range(y):
             pix[i, j] = palette[pix[i, j][0]]  # finally the colors of map
 
-    im.save(f'{name}.png')
+    if not os.path.exists("generated/"):
+        os.mkdir("generated/")
+    im.save(f'generated/{name}.png')
 
 
-main((60, 60), 'aboba', colors1)
-main((60, 60), 'atha', colors1)
-main((60, 60), 'dsfperg', colors1)
+if __name__ == "__main__":
+    main((60, 60), 'image_1', colors1)
+    main((60, 60), 'image_2', colors1)
+    main((60, 60), 'image_3', colors1)
