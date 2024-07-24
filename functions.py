@@ -1,7 +1,25 @@
 from datetime import datetime
+from time import perf_counter_ns
 
 
 last_int, last_float = 1, 0.1
+prev_rand = perf_counter_ns()
+
+
+# If you want to use my random,
+# just remove the "y" in the name of your random function,
+# and add "y" to the name of this function
+def m_random(x: int = 0, y: int = 1) -> float | int:
+    global prev_rand
+    a, c, m = 1103515245, 12345, 2 ** 31
+
+    prev_rand = (a * prev_rand + c) % m
+
+    if x == 0 and y == 1:
+        print(prev_rand / m)
+        return prev_rand / m
+
+    return x + prev_rand % (y - x)
 
 
 def my_random(x=0, y=1):
