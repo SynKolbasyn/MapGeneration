@@ -228,7 +228,7 @@ it should be unicue):</string>
        <widget class="QLabel" name="label_3">
         <property name="text">
          <string>size (shouldn't be more
-then 400*400)</string>
+than 400*400)</string>
         </property>
        </widget>
       </item>

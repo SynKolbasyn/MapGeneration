@@ -1,10 +1,12 @@
 import sys
+from random import randint
+
 from data import functions as fun
 from PyQt6 import uic
 from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QLabel  # all imports
 from PIL import Image
 from PyQt6.QtGui import QPixmap
-
+id_name = 0
 
 class ShowWindow(QMainWindow):
     def __init__(self, name, size):
@@ -19,6 +21,7 @@ class ShowWindow(QMainWindow):
 
 
 class MainWindow(QMainWindow):
+    global id_name
     def __init__(self):
         super().__init__()
         uic.loadUi('forms/main_wind.ui', self)
@@ -34,8 +37,15 @@ class MainWindow(QMainWindow):
         palette.append(fun.colors(self.color5))
         palette.append(fun.colors(self.color6))
         palette = [palette[i] for i in range(6) if palette[i] is not None]
-        file_name = self.filename.text()
-        size = tuple(map(int, self.size.text().split('*')))
+        try:
+            file_name = self.filename.text()
+        except Exception as _:
+            file_name = str(randint(0, 100)) + str(id_name)
+
+        try:
+            size = tuple(map(int, self.size.text().split('*')))
+        except Exception as _:
+            size = (40, 40)
         fun.creating_func(size, file_name, palette)
         ap = QApplication(sys.argv)
         exi = ShowWindow(file_name, size)

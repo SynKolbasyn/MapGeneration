@@ -6,8 +6,8 @@ from PIL import Image
 import pathlib
 
 import sqlite3
-import sys
-from PyQt6.QtWidgets import QApplication
+# import sys
+# from PyQt6.QtWidgets import QApplication
 
 last_int, last_float = 1, 0.1
 prev_rand = perf_counter_ns()
@@ -106,9 +106,11 @@ def colors(form_col):
     :return: tuple | None
     """
     if form_col.text():
-        print('-')
-        r, g, b = form_col.text()[1:-1].split(',')
-        r, g, b = int(r.strip(', .')), int(g.strip(', .')), int(b.strip(', .'))
+        try:
+            r, g, b = form_col.text()[1:-1].split(',')
+            r, g, b = int(r.strip(', .')), int(g.strip(', .')), int(b.strip(', .'))
+        except Exception as err:
+            return err
         return tuple([r, g, b])
     return None
 
@@ -183,9 +185,16 @@ def creating_func(size: tuple, name: str, palette: list):
 
 
 def db_request(name):
-    db = sqlite3.connect("db/database.sqlite")
+    db = sqlite3.connect("../db/database.sqlite")
     cur = db.cursor()
-    result = cur.execute(f"""SELECT image FROM generations
-                WHERE name = '{name}'""").fetchall()[0]
-    return result
+    try:
+        result = cur.execute(f"""SELECT image FROM generations WHERE name = '{name}';""").fetchone()
+        print(type(result))
+        return result
+    except Exception as err:
+        return (err,)
 
+# a = len(db_request("aboba1")) // 3
+# im = Image.new(mode="RGB", size=(int(a ** 0.5), int(a ** 0.5)))
+# im.frombytes(db_request("aboba1"))
+# im.show()
